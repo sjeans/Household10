@@ -1,0 +1,52 @@
+﻿@page "/addressbook/addcontact/{AddressId:int}/{Id:int}"
+
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Modals
+@using Household.Shared.Helpers;
+@using Blazorise
+
+<PageTitle>Add Contact @_contactName</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Add Contact @_contactName</h2>
+    <p class="text-muted small">For Address @_addressName</p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start mt-3"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" Message="@_message" />
+
+<section id="dailyShows" class="row">
+    <Household.SharedComponents.Components.Shared.Messages.Notification @ref="_alertNotification" Message="@_message" />
+
+    <EditForm FormName="addContact" Model=@_newContactNumber OnValidSubmit="@HandleSubmit" OnInvalidSubmit="@HandleInvalid" class="form-control h-auto">
+        <DataAnnotationsValidator />
+        <div class="mb-3">
+            <label for="Name" class="form-control-sm">Name</label>
+            <Validation Validator="ValidationRule.IsNotEmpty">
+                <ValidationSuccess>Name is good.</ValidationSuccess>
+                <ValidationError>Enter valid name!</ValidationError>
+                <InputText @bind-Value=_newContactNumber.Name class="form-control" id="Name" />
+                <ValidationMessage For="@(() => _newContactNumber.Name)" />
+            </Validation>
+        </div>
+        <div class="mb-3">
+            <label for="PhoneNumber" class="form-control-sm">Phone Number</label>
+            <Validation Validator="ValidationRule.IsNotEmpty">
+                <ValidationSuccess>Phone number is good.</ValidationSuccess>
+                <ValidationError>Enter valid phone number!</ValidationError>
+                <InputText @bind-Value=_newContactNumber.PhoneNumber class="form-control" id="PhoneNumber" />
+                <ValidationMessage For="@(() => _newContactNumber.PhoneNumber)" />
+            </Validation>
+        </div>
+            
+        <div class="d-flex justify-content-end">
+            <SaveButton ButtonText="Save" CanSave="true" CanShow="true" />
+        </div>
+    </EditForm>
+</section>

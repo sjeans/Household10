@@ -1,0 +1,26 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Household.SharedComponents.Components.Pages
+
+<PageTitle>Home</PageTitle>
+
+@rendermode RenderMode.InteractiveServer
+
+<h1>Tv Shows and Movies!</h1>
+
+<section class="row">
+    <div class="col-md-8">
+        <p>Welcome to your new show scheduler.</p>
+        <p>See tv shows and the days that they're on.</p>
+        <p>See and manage the streaming services we use.</p>
+        <p>See and manage the movies we have on disk.</p>
+    </div>
+
+    <div class="col-md-4">
+        <EditForm Model="@TVShow">
+            <label for="ExpirationDate">Pick a day</label>
+            <InputDate Value="@Pickday" ValueExpression="@(() => Pickday)" ValueChanged="@((DateTime newValue) => GoToDay(newValue))" class="form-control" id="ExpirationDate" />
+        </EditForm>
+    </div>
+</section>

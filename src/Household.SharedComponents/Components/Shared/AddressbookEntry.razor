@@ -1,0 +1,33 @@
+﻿@using Household.Shared.Dtos
+@using Household.Shared.Helpers
+
+@if (AllAddresses?.Count > 0)
+{
+    foreach (AddressInfoDto addressInfo in AllAddresses)
+    {
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <a href="/addressbook/edit/@addressInfo.Id" style="@_disable">@addressInfo.Name</a><br />
+            @addressInfo.Address<br />
+        @if (!addressInfo.Address2.IsNullOrWhiteSpace())
+        {
+            @addressInfo.Address2 <br />
+        }
+            @addressInfo.City, @addressInfo.State<br />
+            @addressInfo.CountryCode<br />
+        @foreach (var contactNumber in addressInfo.ContactNumbers!)
+        {
+            <div class="col-md-12 text-muted small" style="padding: 5px;">
+                @contactNumber.Name <br /> @Common.FormatPhoneNumber(@contactNumber.PhoneNumber)
+            </div>
+        }
+        </div>
+    </div>
+</div>
+    }
+}
+else
+{
+    <p class="text-muted">@_noAddressbookEntriesFound</p>
+}

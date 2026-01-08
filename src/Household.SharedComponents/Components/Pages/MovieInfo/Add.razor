@@ -1,0 +1,42 @@
+﻿@page "/MovieInfo/Add"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Add New Movie</h2>
+    <p class="text-muted small"></p>
+    <p class="text-start">
+    @if (PageHistoryState.CanGoBack())
+    {
+        <a href="@PageHistoryState.GetGoBackPage()">Go Back</a>
+    }
+    </p>
+</div>
+
+<section id="movieInfo" class="row">
+<AuthorizeView Context="authContext">
+    <Authorized>
+@if (MovieInfo != null)
+{
+    <EditForm Formname="addMovie" Model=@MovieInfo OnSubmit="@HandleSubmit" class="form-control h-auto">
+        <AddEditMovieInfo MovieId="@MovieInfo.Id" MovieInfo="@MovieInfo" />
+    </EditForm>
+    <AddEditMessage Message="@Message" Type="movie" />
+}
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</section>
+
+<SuccessNotification @ref="_notification" Parent="MovieInfo" />

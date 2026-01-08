@@ -1,0 +1,44 @@
+﻿@page "/foundshows/index/{searchTerm?}"
+@page "/foundshows/{searchTerm?}"
+
+@using Blazorise
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Helpers
+
+<PageTitle>Found Show @SearchTerm</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Found Shows @SearchTerm</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+@if (_showInputs == false)
+{
+    @if (PageHistoryState.CanGoBack())
+    {
+    <p><a href="@PageHistoryState.GetGoBackPage()" class="me-2">Go Back</a></p>
+    }
+    <Search Term="@SearchTerm" />
+    <p class="text-start">Searched for: @SearchTerm</p>
+}
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+ <section id="dailyShows">
+@if (_foundShows !=null && _foundShows.Any())
+{
+    <Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+        <Items>
+            <Tab Name="ShowsToWatch"><div class="col-md-12"><b>Found Shows</b></div></Tab>
+        </Items>
+        <Content>
+            <TabPanel Name="ShowsToWatch">
+                <TvShowsList TvShowCategory="_foundShows" LinkDisabled="@_disable" ShowInformation="@_activeShowInformation" />
+            </TabPanel>
+        </Content>
+    </Tabs>
+}
+    <p><em>@_noneFound</em></p>
+</section>

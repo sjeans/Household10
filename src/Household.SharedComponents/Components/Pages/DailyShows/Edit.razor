@@ -1,0 +1,50 @@
+﻿@page "/dailyshows/edit/{Id:int}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.SharedComponents.Components.Shared.Messages
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@* @rendermode RenderMode.InteractiveAuto *@
+
+@attribute [Authorize(Roles = "Supervisor")]
+
+<PageTitle>Edit @_showName</PageTitle>
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Edit @_showName</h2>
+    <p class="text-muted small"></p>
+@if (PageHistory.CanGoBack())
+{
+    <p><a href="@PageHistory.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Household.SharedComponents.Components.Shared.Modals.Notification @ref="_notification" Parent="DailyShows" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows" class="row">
+    <AuthorizeView Context="authContext" Roles="Supervisor">
+        <Authorized>
+@if (_tVShow != null)
+{
+    <Household.SharedComponents.Components.Shared.Messages.Notification @ref="_alertNotification" Message="@_message" />
+<CascadingValue Value="IsEnabled">
+    <EditForm FormName="editShow" EditContext="@EditContextRef" OnSubmit="@HandleSubmit" class="form-control h-auto">
+        <AntiforgeryToken />
+        <DataAnnotationsValidator />
+        <AddEditTvShow TVShow="@_tVShow" TvShowId="@_tVShow!.Id" Client="@_client" Logger="@_logger"  Message="@_message" ComponentNotification="_notification" />
+    </EditForm>
+</CascadingValue>
+}
+        </Authorized>
+        <NotAuthorized>
+            <Login />
+        </NotAuthorized>
+    </AuthorizeView>
+</section>

@@ -1,0 +1,48 @@
+﻿@page "/streamingservices/edit/{Id:int}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.SharedComponents.Components.Shared.Modals
+
+<PageTitle>Edit @_streamingName</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Edit @_streamingName</h2>
+    <p class="text-muted small"></p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" Parent="StreamingServices" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="streamingServices" class="row">
+<AuthorizeView Context="authContext">
+    <Authorized>
+    <Household.SharedComponents.Components.Shared.Messages.Notification @ref="_alertNotification" Message="@_message" />
+<CascadingValue Value="IsEnabled">
+    <EditForm FormName="editService" Model="@_streamingService" OnSubmit="@HandleSubmit" class="form-control h-auto">
+        <AddEditStreamingService StreamingServiceId="@_streamingService.Id" ServiceDto="@_streamingService" Client="@_client" Log="@_logger" ComponentNotification="@_notification" Message="@_message" CanSave="@_canSave" CanShow="@_canShow" />
+    </EditForm>
+</CascadingValue>
+    </Authorized>
+    <Authorizing>
+        <p>Checking authorization status...</p>
+    </Authorizing>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</section>

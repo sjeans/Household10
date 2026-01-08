@@ -1,0 +1,34 @@
+﻿@page "/managing/manageusertypes/edit/{Id:int}"
+
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Manage.Users.Forms
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.SharedComponents.Components.Shared.Messages
+
+<PageTitle>Edit User @_roleName</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Edit Role</h2>
+    <p class="text-muted small">@_roleName</p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="user" class="row">
+@if(_editUserType is not null)
+{
+<CascadingValue Value="IsEnabled">
+    <EditForm FormName="editUserType" EditContext=@EditContextRef OnSubmit="@HandleSubmit" class="form-control h-auto">
+        <AddEditUserType UserType="_editUserType" Notification="@_alertNotification" Logger="@_logger" ClientId="@_userIp.IpAddress" CanSave="@_canSave" CanShow="@_canShow" />
+    </EditForm>
+</CascadingValue>
+}
+</section>

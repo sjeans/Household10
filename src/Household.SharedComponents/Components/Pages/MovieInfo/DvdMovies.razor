@@ -1,0 +1,47 @@
+﻿@page "/movieinfo/dvdmovies"
+@using Household.SharedComponents.Components.Shared.Loader
+
+<PageTitle>All Dvd Movies</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">All Dvd Movies</h2>
+    <p class="text-muted small"></p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="movieInfo" class="row">
+    <div><button @onclick="Next">Next</button></div>
+    <div class="scrollable-section">
+@if (_pagedDvdMovieDtos is not null)
+{
+    @foreach (var item in _pagedDvdMovieDtos)
+    {
+    <div class="col-12 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="@item.PosterPath" title="@item.Title" class="img-fluid rounded shadow-sm poster" style="@(string.IsNullOrEmpty(item.PosterPath) ? "display: none;" : "")" />
+                    </div>
+                    <div class="col-9">
+                        <div class="text-primary">@item.Title - <a href="/movieinfo/edit/@item.MovieId">Edit</a></div>
+                        <div class="small"><b>@item.TagLine</b></div>
+                        <div class="small">@item.Overview</div>
+                        <div class="small"><b>Release Date:</b> @item.ReleaseDate</div>
+                        <div class="small"><b>Genres:</b> @item.Genres</div>
+                        <div class="small"><b>Runtime</b>: @item.Runtime</div>
+                        <div class="small"><b>Revenue</b>: @item.Revenue</div>
+                        <div class="small"><!-- Id: @item.Id --></div>
+                        <div class="small"><a href="@item.HomePage" style="@(string.IsNullOrEmpty(item.HomePage) ? "display: none;" : "")" target="_blank">@item.HomePage</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+}
+    </div>
+</section>

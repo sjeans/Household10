@@ -1,0 +1,78 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Components.Forms
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+
+<h3>Login</h3>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <p class="text-danger">@error</p>
+}
+
+<EditForm Formname="loginForm" Model="@loginModel" OnValidSubmit="@HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value="@loginModel.Username" placeholder="Username" />
+    <InputText @bind-Value="@loginModel.Password" type="password" placeholder="Password" />
+    <button class="btn btn-primary" type="submit">Login</button>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new();
+    private string? error;
+
+    private async Task HandleLogin()
+    {
+        var client = HttpClientFactory.CreateClient();
+
+        var values = new Dictionary<string, string>
+        {
+            ["grant_type"] = "password",
+            // ["client_id"] = "tvshow-frontend",
+            // ["client_secret"] = "V858ZMOOPxJJZv6WD927YoCB7TbUMLcx",
+            ["client_id"] = "my-blazor-app",
+            ["client_secret"] = "D60z8wljrPKynttalVaGsJsOxBE26b42",
+            ["username"] = loginModel.Username,
+            ["password"] = loginModel.Password
+        };
+
+        /*
+        "ClientId": "",
+        "ClientSecret": "",*/
+
+        var content = new FormUrlEncodedContent(values);
+        // var response = await client.PostAsync("http://192.168.0.110:8443/realms/tvshow-front-end-client/protocol/openid-connect/token", content);
+        var response = await client.PostAsync("http://192.168.0.162:8443/realms/household-api/protocol/openid-connect/token", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            // Parse tokens, store them in local storage, etc.
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            error = "Invalid username or password.";
+        }
+    }
+
+    class LoginModel
+    {
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+}
+@*
+@page "/login"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.OpenIdConnect
+@inject NavigationManager Navigation
+
+@{
+    // Redirect to the Keycloak login page
+    var properties = new AuthenticationProperties { RedirectUri = "/" };
+    await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, properties);
+}
+
+*@

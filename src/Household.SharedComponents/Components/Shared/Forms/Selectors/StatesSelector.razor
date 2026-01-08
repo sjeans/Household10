@@ -1,0 +1,7 @@
+﻿<select id="ddlStates" name="ddlStates" class="form-select" autocomplete="address-level1" asp-for="ddlStates" asp-items="Html.GetEnumSelectList<States>()" @onchange="HandleChange">
+    <option value="">Choose a State</option>
+@foreach (var c in States)
+{
+    <option value="@c.Value" selected="@c.Selected">@c.Text</option>
+}
+</select>

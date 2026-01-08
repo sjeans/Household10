@@ -1,0 +1,10 @@
+﻿@using Household.Shared.Helpers
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@if (!Message.IsNullOrWhiteSpace())
+{
+<div class="alert @_alertSuccess alert-dismissible m-2">
+    <strong>@Message</strong>
+</div>
+}

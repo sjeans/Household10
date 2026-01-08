@@ -1,0 +1,94 @@
+﻿@using Blazorise
+@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms.Selectors
+@* @using Household.Components.Shared.Rating *@
+
+@* @rendermode @(new InteractiveServerRenderMode(prerender: true)) *@
+@rendermode RenderMode.InteractiveAuto
+
+<div class="mb-3">
+    <label for="Name" class="form-label">Name</label>
+    <Validation Validator="ValidationRule.IsNotEmpty">
+        <ValidationSuccess>Name is good.</ValidationSuccess>
+        <ValidationError>Enter valid name!</ValidationError>
+        <InputText id="Name" @bind-Value="TVShow.Name" @attributes="HandyFunction()" class="form-control" />
+    </Validation>
+    <ValidationMessage For="@(() => TVShow.Name)" />
+</div>
+
+<div class="mb-3">
+    <label for="Description" class="form-label">Description</label>
+    <InputText id="Description" @bind-Value="TVShow.Description" class="form-control" />
+</div>
+
+<div class="row mb-3">
+    <label for="Time" class="col-sm-12 col-md-2 col-form-label">Time</label>
+    <div class="col-sm-12 col-md-4">
+        <InputText id="Time" @bind-Value="TVShow.Time" class="form-control" />
+    </div>
+    <label for="Rating" class="col-sm-12 col-md-2 col-form-label">Rating</label>
+    <div class="col-sm-12 col-md-4">
+        <InputNumber id="Rating" @bind-Value="TVShow.Rating" class="form-control" />
+@*         <Rating TValue="decimal" @bind-SelectedValue="@_selectedValue" EmptyIcon="IconName.Star" FullIcon="IconName.Star" Margin="Margin.Is3" MaxValue="10" />
+        <DecimalRating EmptyIcon="IconName.Star" FullIcon="IconName.Star" MaxValue="10" Step="0.5M" Value="@_selectedDecimalValue" /> *@
+    </div>
+</div>
+
+<div class="row mb-3">
+    <label for="ddlNumberOfEpisodes" class="col-sm-12 col-md-2 col-form-label">Episodes</label>
+    <div class="col-sm-12 col-md-4">
+        <EpisodeSelector EpisodeCount="@TVShow.Episodes" OnEpisodeUpdate="EpisodeUpdate" />
+        <ValidationMessage For="@(() => TVShow.Episodes)" />
+    </div>
+    <label for="ddlSeasons" class="col-sm-12 col-md-2 col-form-label">Seasons</label>
+    <div class="col-sm-12 col-md-4">
+        <SeasonsSelector Season="@TVShow.Season" OnSeasonUpdate="SeasonUpdate" />
+        <ValidationMessage For="@(() => TVShow.Season)" />
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-check form-switch">
+            <InputCheckbox id="IsCompletedSeason" @bind-Value="TVShow.IsCompletedSeason" class="form-check-input" />
+            <label class="form-check-label" for="IsCompletedSeason">Completed Season</label>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-check form-switch">
+            <InputCheckbox id="IsCompleted" @bind-Value="TVShow.IsCompleted" class="form-check-input" />
+            <label class="form-check-label" for="IsCompleted">Completed Show</label>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label for="ddlDayOfWeek" class="form-label">Day of Week</label>
+        <DayOfWeekSelector WeekDay="@TVShow.DayOfWeek" OnWeekDayUpdate="WeekDayUpdate" />
+        <ValidationMessage For="@(() => TVShow.DayOfWeek)" />
+    </div>
+    <div class="col-md-6">
+        <label for="ddlSubscriptions" class="form-label">Streaming Service</label>
+        <Validation Validator="ValidateProperty">
+            <ValidationSuccess>Selection is good.</ValidationSuccess>
+            <ValidationError>Enter a valid selection!</ValidationError>
+            <SubscriptionSelector SubscriptionId="@TVShow.StreamingId" OnSubscriptionUpdate="SubscriptionUpdate" />
+        </Validation>
+        <ValidationMessage For="@(() => TVShow.StreamingId)" />
+    </div>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Show Info</label>
+    <ShowInformationSelector ShowName="@TVShow.Name" />
+</div>
+<div class="col-md-12 d-flex justify-content-end gap-2 mt-4">
+    <SaveButton ButtonText="Save" CanSave="@_canSave" CanShow="@_canShow" />
+    <DeleteButton ActionType="deleted" ButtonText="Delete" CanSave="@_canSave" CanShow="@_canShow" Client="@_client" ClientId="@_clientId"
+        DeletedItemId="@TvShowId" DeletedItemName="@_showName" Logger="@_activeLogger" Notification="@ComponentNotification"
+        URI=@($"api/shows/removeshow/{TVShow.Id}") />
+</div>

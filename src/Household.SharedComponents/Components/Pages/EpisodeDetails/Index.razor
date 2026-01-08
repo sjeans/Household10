@@ -1,0 +1,82 @@
+﻿@page "/episodedetails/index/{ShowId:int}/{Season:int}/{EpisodeId:int}"
+
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Forms.Selectors
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Enums
+@using Household.Shared.Helpers
+
+<PageTitle>Epidsode Information for @_showName</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Epidsode Information for</h2>
+    <h2 class="h2 mb-2 fw-semibold">@_showName</h2>
+    <p class="text-muted small">
+        Today: @DateTime.Now.ToShortDateString()
+    </p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows">
+@if(_showEpisode is not null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <EpisodeInformationSelector EpisodeList="_showInformation?.Episodes" EpisodeName="@_showEpisode?.Name" OnEpisodeDetailUpdate="EpisodeUpdate" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">&nbsp;</div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <img alt="@_showEpisode?.Name" src="@_episodeImgSrc" class="img-fluid rounded shadow-sm@_missingImg" />
+        </div>
+        <div class="col-md-7">
+            @_summaryDisplay
+        </div>
+    </div>
+    @* <div class="row">
+        <div class="col-md-12"><p>@ShowEpisode?.Name</p></div>
+    </div> *@
+    <div class="row">
+        <div class="col-md-12"><br></div>
+    </div>
+    <div class="row">
+        <dl class="row small">
+            <dt class="col-sm-5">Title:</dt>
+            <dd class="col-sm-7">@_showEpisode?.Name</dd>
+
+            <dt class="col-sm-2">Season:</dt>
+            <dd class="col-sm-3">@(((Seasons)_episodeSeason).GetDescription())</dd>
+
+            <dt class="col-sm-3">Episode:</dt>
+            <dd class="col-sm-3">@_episodeNumber</dd>
+
+            <dt class="col-sm-2">Aired Date:</dt>
+            <dd class="col-sm-3">@_episodeAirDate</dd>
+
+            <dt class="col-sm-3">Run Time:</dt>
+            <dd class="col-sm-3">@_episodeRuntime</dd>
+
+            <dt class="col-sm-2">Release Time:</dt>
+            <dd class="col-sm-3">@_episodeAirTime</dd>
+
+            <dt class="col-sm-3">Rating:</dt>
+            <dd class="col-sm-3">@_episodeRating</dd>
+
+            @* <dt class="col-sm-3">Stream:</dt>
+            <dd class="col-sm-3">@_streamingName</dd> *@
+        </dl>
+    </div>
+}
+</section>
+
+<Loading @ref="_loadingIndicator" />

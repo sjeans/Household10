@@ -1,0 +1,15 @@
+﻿@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@using Blazorise
+@using Household.SharedComponents.Components.Shared.Modals
+@using Household.Shared.Helpers
+
+<div class="col-md-4" style="overflow-wrap: break-word; margin-top: 5px; margin-left: 10px; margin-bottom: 10px; margin-right: 0;">
+    <a href="/dailyshows/edit/@TvShow?.Id.ToString()" style="@DisableLink" title="@TvShow?.Name">@showName</a><br />
+    @TvShow?.Season.GetDescription() <br />
+    @_whatEpisode <br />
+    <a href="javascript:void()" @onclick="ShowModal">Episode Details</a><br />
+    <a href="/streamingservices/edit/@_streamingId" style="@DisableLink">@_streamingName</a>
+</div>
+
+<TvShow @ref="@_modalRef" ShowInformationDto="@ShowInformationDto" ShowName="@TvShow?.Name" StreamingName="@_streamingName" SeasonNumber="_seasonNumber" />

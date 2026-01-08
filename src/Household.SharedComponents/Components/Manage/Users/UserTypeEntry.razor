@@ -1,0 +1,22 @@
+﻿@foreach (var item in _allUserTypes)
+{
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <div class="table-container">
+                <div class="table-row">
+                    <div class="table-cell text-primary">
+                        @item.Description
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell small"><b>@item.Location</b> - <a href="/managing/manageusertypes/edit/@item.Id">@item.Description</a></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell small"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

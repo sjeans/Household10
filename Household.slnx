@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="src/Household.Application/Household.Application.csproj" />
+  <Project Path="src/Household.Client/Household.Client.csproj" />
+  <Project Path="src/Household.Server/Household.Server.csproj" />
+  <Project Path="src/Household.Shared/Household.Shared.csproj" />
+  <Project Path="src/Household.SharedComponents/Household.SharedComponents.csproj" />
+</Solution>

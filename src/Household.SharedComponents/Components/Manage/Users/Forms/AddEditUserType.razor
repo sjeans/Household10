@@ -1,0 +1,31 @@
+﻿@using Blazorise
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Microsoft.AspNetCore.Components.Forms
+
+<DataAnnotationsValidator />
+<div class="mb-3">
+    <label for="Description" class="form-label">Description</label>
+    <Validation Validator="ValidationRule.IsNotEmpty">
+        <ValidationSuccess>Description is good.</ValidationSuccess>
+        <ValidationError>Enter valid description!</ValidationError>
+        <InputText @bind-Value="_userType.Description" id="Description" class="form-control" />
+        <ValidationMessage For="@(() => _userType.Description)" />
+    </Validation>
+</div>
+
+<div class="mb-3">
+    <label for="Location" class="form-label">Location</label>
+    <Validation Validator="ValidationRule.IsNotEmpty">
+        <ValidationSuccess>Location is good.</ValidationSuccess>
+        <ValidationError>Enter valid location!</ValidationError>
+        <InputText @bind-Value="_userType.Location" id="Location" class="form-control" />
+        <ValidationMessage For="@(() => _userType.Location)" />
+    </Validation>
+</div>
+
+<div class="col-md-12 d-flex justify-content-end gap-2 mt-4">
+    <SaveButton ButtonText="Save" CanSave="@_canSave" CanShow="@_canShow" />
+    <DeleteButton ActionType="deleted" ButtonText="Delete" CanSave="@_canSave" CanShow="@_canShow" Client="@_client" ClientId="@_clientId"
+                  DeletedItemId="@UserType.Id" DeletedItemName="@_roleName" Logger="@ActiveLogger" Notification="@Notification"
+                  URI=@($"api/usertype/remove/{UserType.Id}") />
+</div>

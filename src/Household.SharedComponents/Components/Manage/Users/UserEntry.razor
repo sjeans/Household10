@@ -1,0 +1,22 @@
+﻿@foreach(var user in _users)
+{
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <div class="table-container">
+                <div class="table-row">
+                    <div class="table-cell text-primary">
+                        @user.FirstName @user.LastName
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell small"><b>User Name:</b> <a href="/managing/manageusers/edit/@user.Id">@user.UserName</a></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell small"><b>Email:</b> @user.Email</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

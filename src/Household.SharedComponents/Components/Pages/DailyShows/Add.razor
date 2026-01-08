@@ -1,0 +1,48 @@
+﻿@page "/dailyshows/add"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.SharedComponents.Components.Shared.Modals
+
+<PageTitle>Add New Show</PageTitle>
+
+@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
+@rendermode RenderMode.InteractiveServer
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Add New Show</h2>
+    <p class="text-muted small"></p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" Parent="DailyShows" />
+
+<section id="dailyShows" class="row">
+<AuthorizeView Context="authContext">
+    <Authorized>
+@if (_tVShow != null)
+{
+    <Household.SharedComponents.Components.Shared.Messages.Notification @ref="_alertNotification" Message="@_message" />
+<CascadingValue Value="IsEnabled">
+    <EditForm EditContext=@EditContextRef OnSubmit="@HandleSubmit" class="form-control h-auto" id="addShow">
+        <AntiforgeryToken />
+        <DataAnnotationsValidator />
+        <AddEditTvShow TVShow="@_tVShow" TvShowId="@_tVShow.Id" Logger="@_logger" Client="@_client" ComponentNotification="@_notification" Message="@_message" />
+    </EditForm>
+</CascadingValue>
+}
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</section>

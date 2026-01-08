@@ -1,0 +1,35 @@
+﻿@page "/managing/manageusers/add"
+
+@using Blazorise.LoadingIndicator
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Forms
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.SharedComponents.Components.Shared.Messages
+
+<PageTitle>Add User</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Add User</h2>
+    <p class="text-muted small"></p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="user" class="row">
+<CascadingValue Value="IsEnabled">
+<EditForm FormName="editUser" EditContext=@_editContextRef OnSubmit="@HandleSubmit" class="form-control h-auto">
+    <AddEditUser UserRef="@_addUser" UserId="0" CanSave="@_canSave" CanShow="@_canShow" ClientId="@_clientId" Client="@_client" ComponentNotification="_notification" Logger="@_logger" Message="@_message" />
+</EditForm>
+</CascadingValue>
+
+    <AddEditMessage Message="@_message" Type="user" />
+</section>

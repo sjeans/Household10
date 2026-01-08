@@ -1,0 +1,117 @@
+﻿@* @page "/"
+@namespace HyHousehold.Server.Pages
+
+@using SharedComponents.Components
+@using Microsoft.AspNetCore.Components.Web
+
+@model object
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Household</title>
+    <base href="/" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <HeadOutlet />
+
+    <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
+    <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
+    <link href="_content/Blazorise.Bootstrap/blazorise.bootstrap.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="Household.Server.styles.css" />
+
+    <!-- Make sure you add this link, replacing with your actual RCL name -->
+    <link href="_content/SharedComponents/SharedComponents.styles.css" rel="stylesheet" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Use the HeadOutlet here in the _Host file -->
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+<body>
+    <!-- THIS IS WHERE THE APP COMPONENT IS RENDERED -->
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+    <div id="blazor-error-ui">
+        <!-- Error UI HTML -->
+    </div>
+    <script src="_framework/blazor.server.js"></script>
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+</body>
+</html>
+ *@
+
+@page "/Home"
+
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+
+@model object
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Household</title>
+    <base href="~/" />
+
+    <component type="typeof(ResourcePreloader)" render-mode="Server"/>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+    @* <link href="_content/Blazorise.Icons.FontAwesome/v6/css/all.min.css" rel="stylesheet"> *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
+    <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
+    <link href="_content/Blazorise.Bootstrap5/blazorise.bootstrap5.css?v=1.8.6.0" rel="stylesheet" />
+
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="Household.Server.styles.css" />
+    <component type="typeof(ImportMap)" render-mode="Server" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+
+    @* <script src="_content/Blazorise.Animate/blazorise.animate.js?v=1.8.0.0"></script> *@
+
+    <script src="/scripts/reSetSelector.js"></script>
+    <script src="/scripts/findIP.js"></script>
+    <script src="/scripts/referringPage.js"></script>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo(0, 0); // Scrolls to the top-left corner of the window
+        }
+    </script>
+
+    <link href="_content/Blazorise.SpinKit/blazorise.spinkit.css" rel="stylesheet" />
+    <!-- Use the HeadOutlet here in the _Host file -->
+    <component type="typeof(HeadOutlet)" render-mode="Server" />
+</head>
+<body class="bodyBackground">
+    <component type="typeof(Household.SharedComponents.Components.App)" render-mode="Server" />
+
+    <div id="blazor-error-ui">
+        <!-- Error UI HTML -->
+    </div>
+    <script src="_framework/blazor.server.js"></script>
+    <script src="~/_framework/aspnetcore-browser-refresh.js"></script>
+</body>
+</html>

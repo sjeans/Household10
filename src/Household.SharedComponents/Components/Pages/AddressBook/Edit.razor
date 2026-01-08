@@ -1,0 +1,120 @@
+﻿@page "/addressbook/edit/{Id:int}"
+
+@using Blazorise
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms.Selectors
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.SharedComponents.Components.Shared.Modals
+
+<PageTitle>Edit @_addressName</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Editing</h2>
+    <p class="text-muted small">@_addressName</p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start mt-3"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" Parent="AddressBook" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows" class="row">
+<AuthorizeView Context="authContext">
+    <Authorized>
+    <Household.SharedComponents.Components.Shared.Messages.Notification @ref="_alertNotification" />
+@if (_address.Id > 0)
+{
+    <EditForm FormName="editAddress" EditContext="@EditContextRef" OnSubmit="@HandleSubmit" class="form-control h-auto">
+        <DataAnnotationsValidator />
+        <div class="mb-3">
+            <label for="Name" class="form-label">Name</label>
+            <Validation Validator="ValidationRule.IsNotEmpty">
+                <ValidationSuccess>Name is good.</ValidationSuccess>
+                <ValidationError>Enter valid name!</ValidationError>
+                <InputText @bind-Value=_address.Name class="form-control valid" id="Name" />
+                <ValidationMessage For="@(() => _address.Name)" />
+            </Validation>
+        </div>
+        <div class="mb-3">
+            <label for="Address" class="form-label">Address</label>
+            <Validation Validator="ValidationRule.IsNotEmpty">
+                <ValidationSuccess>Address is good.</ValidationSuccess>
+                <ValidationError>Enter valid address!</ValidationError>
+                <InputText @bind-Value=_address.Address class="form-control valid" id="Address" />
+                <ValidationMessage For="@(() => _address.Address)" />
+            </Validation>
+        </div>
+        <div class="mb-3">
+            <label for="Address2" class="form-label">Address 2</label>
+            <InputText @bind-Value=_address.Address2 class="form-control valid" id="Address2" />
+            <ValidationMessage For="@(() => _address.Address2)" />
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-12 col-md-6 d-flex flex-column flex-md-row align-items-start align-items-md-center">
+                <label for="City" class="form-label mb-1 mb-md-0 me-md-2" style="min-width: 90px;">City</label>
+                <InputText @bind-Value="_address.City" id="City" class="form-control valid" />
+                <ValidationMessage For="@(() => _address.City)" />
+            </div>
+
+            <div class="col-12 col-md-6 d-flex flex-column flex-md-row align-items-start align-items-md-center mt-3 mt-md-0">
+                <label for="State" class="form-label mb-1 mb-md-0 me-md-2" style="min-width: 90px;">State</label>
+                <StatesSelector SelectedState="CA" OnStatesUpdate="StatesUpdate" />
+                <ValidationMessage For="@(() => _address.State)" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12 col-md-6 d-flex flex-column flex-md-row align-items-start align-items-md-center">
+                <label for="PostalCode" class="form-label mb-1 mb-md-0 me-md-2" style="min-width: 90px;">Postal Code</label>
+                <InputText @bind-Value="_address.PostalCode" id="PostalCode" class="form-control valid" />
+                <ValidationMessage For="@(() => _address.PostalCode)" />
+            </div>
+
+            <div class="col-12 col-md-6 d-flex flex-column flex-md-row align-items-start align-items-md-center mt-3 mt-md-0">
+                <label for="Country" class="form-label mb-1 mb-md-0 me-md-2" style="min-width: 90px;">Country</label>
+                <InputText @bind-Value="_address.CountryCode" id="Country" class="form-control valid" />
+                <ValidationMessage For="@(() => _address.CountryCode)" />
+            </div>
+        </div>
+
+        @* <AddEditAddressbook Address="Address" CanSave="@CanSave" CanShow="@CanShow" Client="_client" EditContext="EditContextRef"  ComponentNotification="_notification" /> *@
+
+        <div class="mb-3">
+        @if (_address!.ContactNumbers!.Any()){
+            @foreach (var contactNumber in _address.ContactNumbers!)
+            {
+            <div class="col-md-12">
+                <NavLink href="@($"/addressbook/editcontact/{_address.Id}/{@contactNumber.Id}")" Match="NavLinkMatch.Prefix">
+                    Edit
+                </NavLink>
+                @contactNumber.Name - <a href="/addressbook/editcontact/@_address.Id/@contactNumber.Id" style="@_disable;">@contactNumber.PhoneNumber</a>
+            </div>
+            }
+        }
+            <div class="col-md-12">
+                @_addressName - <a href="/addressbook/AddContact/@_address.Id/0" style="@_disable;">Add new phone number</a>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end col-md-12">
+            <SaveButton ButtonText="Save" CanSave="@_canSave" CanShow="@_canShow" />
+        </div>
+    @*  *@</EditForm>
+}
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</section>

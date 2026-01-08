@@ -1,0 +1,9 @@
+﻿@using Household.Shared.Helpers;
+
+<select id="ddlNumberOfEpisodes" name="ddlNumberOfEpisodes" class="form-select" asp-for="NumberOfEpisodes" asp-items="Model.Options" @onchange="HandleChange">
+    <option value="">@(DefaultOption.IsNullOrWhiteSpace() ? _defaultOption : DefaultOption)</option>
+@foreach (var c in _options)
+    {
+        <option value="@c.Value" selected="@c.Selected">@c.Text</option>
+    }
+</select>

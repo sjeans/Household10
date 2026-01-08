@@ -1,0 +1,44 @@
+﻿@page "/MovieInfo/Edit/{Id:int}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms
+@using Household.SharedComponents.Components.Shared.Loader
+
+<PageTitle>Edit @_movieTitle</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Edit @_movieTitle</h2>
+    <p class="text-muted small"></p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<SuccessNotification @ref="_notification" Parent="MovieInfo" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows" class="row">
+<AuthorizeView Context="authContext">
+    <Authorized>
+    <AddEditMessage Message="@_message" Type="movie" />
+<CascadingValue Value="@IsEnabled">
+    <EditForm Model=@MovieInfo OnSubmit="@HandleSubmit" class="form-control h-auto">
+        <AddEditMovieInfo MovieId="@MovieInfo.Id" MovieInfo="@MovieInfo" Client="_client" />
+    </EditForm>
+</CascadingValue>
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</section>

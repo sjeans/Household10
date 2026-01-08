@@ -1,0 +1,120 @@
+﻿@page "/movieinfo/"
+@page "/movieinfo/index"
+
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.Shared.Dtos;
+@using Household.Shared.Helpers
+@using Blazorise
+@using Blazorise.DataGrid
+@using Microsoft.AspNetCore.Components.Authorization
+
+<PageTitle>All Movies</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">All Movies</h2>
+    <p class="text-muted small"></p>
+</div>
+
+<section id="movieInfo" class="row">
+    <DataGrid Data="@pagedMovieInfoList" TItem="MovieInfoDto" TotalItems="@totalMovies"
+        FixedHeader="true"
+            ShowPager="true" PagerPosition="DataGridPagerPosition.Bottom" ShowPageSizes="true"
+            Sortable="false" ShowCaptions="true" ReadData="@OnReadDataAsync" Striped="true"
+            Bordered="false" Hoverable="true" Responsive="true" ResponsiveMode="@TableResponsiveMode.Mobile">
+        <FirstPageButtonTemplate><Icon Name="IconName.Backward" TextColor="TextColor.Success" TextSize="TextSize.ExtraSmall" /></FirstPageButtonTemplate>
+        <PreviousPageButtonTemplate><Icon Name="IconName.StepBackward" TextColor="TextColor.Success" TextSize="TextSize.ExtraSmall" /></PreviousPageButtonTemplate>
+        <NextPageButtonTemplate><Icon Name="IconName.StepForward" TextColor="TextColor.Success" TextSize="TextSize.ExtraSmall" /></NextPageButtonTemplate>
+        <LastPageButtonTemplate><Icon Name="IconName.Forward" TextColor="TextColor.Success" TextSize="TextSize.ExtraSmall" /></LastPageButtonTemplate>
+        <PageButtonTemplate>
+            <Span TextColor="TextColor.Success" TextSize="TextSize.ExtraSmall">
+                @context.PageNumber
+            </Span>
+        </PageButtonTemplate>
+        <TotalItemsTemplate><Badge Color="Color.Success" TextSize="TextSize.ExtraSmall">@context.TotalItems total items</Badge></TotalItemsTemplate>
+        <TotalItemsShortTemplate><Badge Color="Color.Success" TextSize="TextSize.ExtraSmall">@context.TotalItems</Badge></TotalItemsShortTemplate>
+        <PageSelectorTemplate>
+            <Select title="ddlSelectSize" Margin="Margin.Is4" TextAlignment="TextAlignment.Center" TextColor="TextColor.Success" @bind-SelectedValue="@context.CurrentPage" Size="Size.ExtraSmall">
+                @for (int i = context.FirstVisiblePage; i <= context.LastVisiblePage; ++i)
+                {
+                    int pageNumber = i;
+                    bool disable = i == intCurrentPage;
+                    <SelectItem Value="@pageNumber" Disabled="@disable" TextSize="TextSize.ExtraSmall">@pageNumber</SelectItem>
+                }
+            </Select>
+        </PageSelectorTemplate>
+        <PageSizesTemplate>
+            <Select TextColor="TextColor.Success" @bind-SelectedValue="@context.CurrentPageSize" Size="Size.Small">
+                @foreach (int curPageSize in context.PageSizes)
+                {
+                    <SelectItem Value="@curPageSize" TextSize="TextSize.Small">@curPageSize</SelectItem>
+                }
+            </Select>
+        </PageSizesTemplate>
+        <DataGridColumns>
+            <DataGridColumn Caption="Title" Field="@nameof(MovieInfoDto.Title)" Editable="false">
+                <DisplayTemplate>
+                    @{
+                        string title = (context as MovieInfoDto).Title;
+                        int _id = (context as MovieInfoDto).Id;
+                        string link = $"/movieinfo/edit/{(context as MovieInfoDto).Id}";
+                    }
+                    <Link To=@link>@title</Link>
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridColumn Caption="Type" Field="Name" Filterable="false">
+                <DisplayTemplate>
+                    <Span TextOverflow="TextOverflow.NoWrap">
+                        @{
+                            string nameType = $"{(context as MovieInfoDto).Name}";
+                        }
+                        @nameType
+                    </Span>
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridColumn Caption="Collectible" Field="Collectible" Filterable="false">
+                <DisplayTemplate>
+                    @{
+                        bool isCollectible = (context as MovieInfoDto).Collectible;
+                        @($"{Common.ConvertBoolToYesNo(isCollectible)}");
+                    }
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridColumn Caption="3D" Field="Is3D" Filterable="false">
+                <DisplayTemplate>
+                    @{
+                        bool is3D = (context as MovieInfoDto).Is3D;
+                        @($"{Common.ConvertBoolToYesNo(is3D)}");
+                    }
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridColumn Caption="4K" Field="Is4K" Filterable="false">
+                <DisplayTemplate>
+                    @{
+                        bool is4K = (context as MovieInfoDto).Is4K;
+                        @($"{Common.ConvertBoolToYesNo(is4K)}");
+                    }
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridColumn Caption="Download" Field="HasDownload" Filterable="false">
+                <DisplayTemplate>
+                    @{
+                        bool hasDownload = (context as MovieInfoDto).HasDownload;
+                        @($"{Common.ConvertBoolToYesNo(hasDownload)}");
+                    }
+                </DisplayTemplate>
+            </DataGridColumn>
+        </DataGridColumns>
+        <EmptyTemplate>
+            <div class="box">
+                No movies were found!
+            </div>
+        </EmptyTemplate>
+        <LoadingTemplate>
+            <Progress @ref="progressRef" Color="Color.Primary" Max="100" Value="progress" Animated Striped />
+        </LoadingTemplate>
+    </DataGrid>
+    <AddButton VisibilityStyle="" Enabled="@Enabled" NavigateToUrl="/MovieInfo/Add" ButtonText="Add New Movie" />
+    </section>

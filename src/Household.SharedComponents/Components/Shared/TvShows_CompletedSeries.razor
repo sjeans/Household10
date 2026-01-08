@@ -1,0 +1,24 @@
+﻿@* @rendermode InteractiveAuto *@
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="row">
+    @{
+        @if (TvShowCategory?.Count == 0)
+        {
+            <div class="col-md-12 d-flex m-2">
+                <div class="align-self-center">None</div>
+            </div>
+        }
+
+        for (int i = 0; i < TvShowCategory?.Count; i++)
+        {
+            <TvShowItem_CompletedSeries TvShow="TvShowCategory[i]" DisableLink="@LinkDisabled" ShowInformationDto="@ShowInformation" />
+            if (TvShowCategory.Count > 3 && (i + 1) % 3 == 0 && (i + 1) != TvShowCategory.Count)
+            {
+                <div class="col-md-12">
+                    <hr called />
+                </div>
+            }
+        }
+    }
+</div>

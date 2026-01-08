@@ -1,0 +1,48 @@
+﻿@page "/completedseries"
+@page "/completedseries/index"
+
+@using Blazorise
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Helpers
+
+<PageTitle>Completed Series</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Completed Series</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+@if (!_showInputs)
+{
+    <Search />
+}
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows">
+@if (_allShows?.Count > 0)
+{
+    <Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+        <Items>
+            <Tab Name="SeasonOver"><div class="col-md-12"><b>Season finale</b></div></Tab>
+            <Tab Name="CompletedShows"><div class="col-md-12"><b>Series finale</b></div></Tab>
+        </Items>
+        <Content>
+            <TabPanel Name="SeasonOver">
+                <TvShows_CompletedSeries TvShowCategory="_inactiveDailyShows" LinkDisabled="@_disable" ShowInformation="@_activeShowInformation" />
+            </TabPanel>
+            <TabPanel Name="CompletedShows">
+                <TvShows_CompletedSeries TvShowCategory="_overShows" LinkDisabled="@_disable" ShowInformation="@_activeShowInformation" />
+            </TabPanel>
+        </Content>
+    </Tabs>
+}
+    <p><em>@_noneFound</em></p>
+@if (!_showInputs)
+{
+    <AddButton VisibilityStyle="@_visible" Enabled="@_enabled" NavigateToUrl="/dailyshows/add/" ButtonText="Add New Show" />
+}
+</section>

@@ -1,0 +1,48 @@
+﻿@page "/dailyshows/showsforday/{Id:long}"
+@page "/dailyshows/showsforday/{Month:int}/{Day:int}/{Year:int}"
+
+@using Blazorise
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Microsoft.AspNetCore.Components.Web
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Loader
+
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
+<PageTitle>TV Shows for @_dayName</PageTitle>
+
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Shows for @_dayName</h2>
+    <p class="text-muted small">Selected date: @_today.ToShortDateString()</p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows">
+@if (_allShows.Count > 0)
+{
+    <Tabs SelectedTab="@_selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+        <Items>
+            <Tab Name="ShowsToWatch"><div class="col-md-12"><b>Shows to watch</b></div></Tab>
+            <Tab Name="SeasonOver"><div class="col-md-12"><b>Season finale</b></div></Tab>
+            <Tab Name="CompletedShows"><div class="col-md-12"><b>Series finale</b></div></Tab>
+        </Items>
+        <Content>
+            <TabPanel Name="ShowsToWatch">
+                <TvShowsList TvShowCategory="_activeDailyShows" LinkDisabled="@_disable" ShowInformation="@_activeShowInformation" />
+            </TabPanel>
+            <TabPanel Name="SeasonOver">
+                <TvShowsList TvShowCategory="_inactiveDailyShows" LinkDisabled="@_disable" />
+            </TabPanel>
+            <TabPanel Name="CompletedShows">
+                <TvShowsList TvShowCategory="_overShows" LinkDisabled="@_disable" />
+            </TabPanel>
+        </Content>
+    </Tabs>
+}
+    <p><em>@_noneToday</em></p>
+@if (!_showInputs)
+{
+    <AddButton VisibilityStyle="@_visible" NavigateToUrl="/dailyshows/add" Enabled=@_enabled ButtonText="Add New Show" />
+}
+</section>

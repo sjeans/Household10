@@ -1,0 +1,78 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using Blazorise
+@using Household.SharedComponents.Components.Manage.Users.Forms.Selectors
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms.Selectors
+@using Household.SharedComponents.Components.Manage.Users
+@using Microsoft.AspNetCore.Components.Forms
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<AntiforgeryToken />
+<DataAnnotationsValidator />
+<div class="row mb-3">
+    <label for="FirstName" class="col-sm-12 col-md-2 col-form-label">First Name</label>
+    <div class="col-sm-12 col-md-4">
+        <Validation Validator="ValidationRule.IsNotEmpty">
+            <ValidationSuccess>First name is good.</ValidationSuccess>
+            <ValidationError>Enter valid first name!</ValidationError>
+            <InputText id="FirstName" @bind-Value="_editUser.FirstName" class="form-control" autocomplete />
+        </Validation>
+        <ValidationMessage For="@(() => _editUser.FirstName)" />
+    </div>
+
+    <label for="LastName" class="col-sm-12 col-md-2 col-form-label">Last Name</label>
+    <div class="col-sm-12 col-md-4">
+        <Validation Validator="ValidationRule.IsNotEmpty">
+            <ValidationSuccess>Last name is good.</ValidationSuccess>
+            <ValidationError>Enter valid last name!</ValidationError>
+            <InputText id="LastName" @bind-Value="_editUser.FirstName" class="form-control" autocomplete />
+        </Validation>
+        <ValidationMessage For="@(() => _editUser.FirstName)" />
+    </div>
+</div>
+    
+<div class="row mb-3">
+    <label for="UserName" class="col-sm-12 col-md-2 col-form-label">User Name</label>
+    <div class="col-sm-12 col-md-4">
+        <Validation Validator="ValidationRule.IsNotEmpty">
+            <ValidationSuccess>User name is good.</ValidationSuccess>
+            <ValidationError>Enter valid username!</ValidationError>
+            <InputText id="UserName" @bind-Value="_editUser.UserName" class="form-control" autocomplete />
+        </Validation>
+        <ValidationMessage For="@(() => _editUser.FirstName)" />
+    </div>
+
+    <label for="Email" class="col-sm-12 col-md-2 col-form-label">Email</label>
+    <div class="col-sm-12 col-md-4">
+        <InputText id="Email" @bind-Value="_editUser.Email" class="form-control" />
+    </div>
+</div>
+
+<div class="row mb-3">
+    <!-- Checkbox -->
+    <label for="Active" class="col-sm-12 col-md-2 col-form-label">Active</label>
+    <div class="col-sm-12 col-md-4 d-flex align-items-center">
+        <div class="form-check form-switch mb-0">
+            <InputCheckbox @bind-Value="_editUser.Active" id="Active" title="Active" class="form-check-input" />
+        </div>
+    </div>
+
+    <!-- Dropdown -->
+    <label for="ddlSeasons" class="col-sm-12 col-md-2 col-form-label">Role</label>
+    <div class="col-sm-12 col-md-4">
+        <Validation Validator="ValidateProperty">
+            <ValidationSuccess>Selection is good.</ValidationSuccess>
+            <ValidationError>Enter valid selection!</ValidationError>
+            <UserTypeSelector UserTypeId="@_editUser.UserTypeId" OnUserTypeUpdate="UserTypeUpdate" />
+        </Validation>
+        <ValidationMessage For="@(() => _editUser.UserType)" />
+    </div>
+</div>
+
+<div class="col-md-12 d-flex justify-content-end gap-2 mt-4">
+    <SaveButton ButtonText="Save" CanSave="@_canSave" CanShow="@_canShow" />
+    <DeleteButton ActionType="deleted" ButtonText="Delete" CanSave="@_canSave" CanShow="@_canShow" Client="@_client" ClientId="@_clientId"
+        DeletedItemId="@UserId" DeletedItemName="@_userName" Logger="@ActiveLogger" Notification="@new()"
+        URI=@($"{UserId}") />
+</div>

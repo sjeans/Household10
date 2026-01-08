@@ -1,0 +1,12 @@
+﻿@if (isAuthenticated)
+{
+    <div class="nav-item px-3">
+        <a class="nav-link ps-2" href="/Account/Logout?returnUrl=@pageReferrer"><span class="oi oi-people me-2" aria-hidden="true"></span> Logout</a>
+    </div>
+}
+else
+{
+    <div class="nav-item px-3">
+        <a class="nav-link ps-2" href="/Account/Login?returnUrl=@pageReferrer"><span class="oi oi-people me-2" aria-hidden="true"></span> Login</a>
+    </div>
+}

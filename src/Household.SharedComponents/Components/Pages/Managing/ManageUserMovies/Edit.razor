@@ -1,0 +1,21 @@
+﻿@page "/managing/manageusermovies/edit/{Id:int}"
+
+@using Household.SharedComponents.Components.Shared.Loader
+
+<PageTitle>Edit User Movie @_movieName</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Edit User Movie @_movieName</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows" class="row">
+</section>

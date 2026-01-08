@@ -1,0 +1,30 @@
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8181
+
+ENV TZ=America/Los_Angeles
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+WORKDIR /src
+
+COPY ["./Household/Household.Server/Household.Server.csproj", "Household/Household.Server/"]
+COPY ["./Household/Household.Client/Household.Client.csproj", "Household/Household.Client/"]
+COPY ["./Household/Household.Application/Household.Application.csproj", "Household/Household.Application/"]
+COPY ["./Household/Household.Shared/Household.Shared.csproj", "Household/Household.Shared/"]
+
+RUN dotnet restore "./Household/Household.Server/./Household.Server.csproj"
+COPY . .
+WORKDIR "/src/Household/Household.Server/"
+RUN dotnet build "./Household.Server.csproj" -c Release -o /app/build
+
+FROM build AS publish
+
+RUN dotnet publish "./Household.Server.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Household.Server.dll"]

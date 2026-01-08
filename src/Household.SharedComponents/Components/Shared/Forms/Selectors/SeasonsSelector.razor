@@ -1,0 +1,11 @@
+﻿@using Household.Shared.Enums
+@using Household.Shared.Helpers
+
+<select id="ddlSeasons" name="ddlSeasons" class="form-select" asp-for="ddlSeasons" asp-items="Model.Season" @onchange="HandleChange">
+    <option value="">Choose what Season</option>
+@foreach (var c in Enum.GetValues(typeof(Seasons)))
+{
+    Seasons season= (Seasons)c;
+    <option value="@Convert.ToInt32(c)" selected="@((int)Season == (int)c)">@season.GetDescription()</option>
+}
+</select>

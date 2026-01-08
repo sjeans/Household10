@@ -1,0 +1,48 @@
+﻿@page "/streamingservices/add"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms
+@using Household.SharedComponents.Components.Shared.Modals
+
+<PageTitle>Add new Streaming Service</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Add new Streaming Service</h2>
+    <p class="text-muted small"></p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" Parent="StreamingServices" />
+
+<section id="streaamingServices" class="row">
+<AuthorizeView Context="authContext">
+    <Authorized>
+@if (_streamingService != null)
+{
+<CascadingValue Value="IsEnabled">
+    <EditForm FormName="addService" Enhance EditContext=@EditContextRef OnValidSubmit="@HandleSubmit" class="form-control h-auto">
+        <AddEditStreamingService StreamingServiceId="@_streamingService.Id" ServiceDto="@_streamingService" CanSave="@_canSave" CanShow="@_canShow" />
+    </EditForm>
+    <Household.SharedComponents.Components.Shared.Messages.Notification @ref="_alertNotification" Message="@_message" />
+</CascadingValue>
+}
+    </Authorized>
+    <Authorizing>
+        <p>Checking authorization status...</p>
+    </Authorizing>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</section>

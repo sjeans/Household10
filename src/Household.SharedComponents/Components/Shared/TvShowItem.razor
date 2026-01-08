@@ -1,0 +1,29 @@
+﻿@using Household.Shared.Helpers
+
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <div class="table-container">
+                <div class="table-row">
+                    <div class="table-cell card-title text-primary">
+                        <a href="/dailyshows/edit/@TvShow?.Id.ToString()" style="@DisableLink" title="@TvShow?.Name">@_showName</a>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">@TvShow?.Season.GetDescription()</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">@_seasonStartDate</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell"><EpisodeModalBadge Label="@_whatEpisode" OnClick="ShowModal" /></div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell"><a href="/streamingservices/edit/@TvShow?.StreamingId" class="small text-muted card-link text-decoration-none;">@TvShow?.StreamingName</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<Household.SharedComponents.Components.Shared.Modals.TvShow @ref="_modalRef" ShowInformationDto="@ShowInformationDto" ShowName="@TvShow?.Name" StreamingName="@TvShow?.StreamingName" SeasonNumber="_seasonNumber" />

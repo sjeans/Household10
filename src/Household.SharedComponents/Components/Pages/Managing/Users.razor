@@ -1,0 +1,29 @@
+﻿@page "/managing/users"
+
+@using Household.SharedComponents.Components.Manage
+@using Household.SharedComponents.Components.Manage.Users
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Loader
+
+<PageTitle>All users</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">All users</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+    <p>
+        @* <input type="button" class="btn btn-secondary m-sm-2" value="Add User" @onclick='() => NavManager.NavigateTo("/Managing/AddUser")' /> *@
+    </p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows" class="row">
+@if (_allUsers != null)
+{
+    <UserEntry AllUsers="@_allUsers" />
+}
+    <p><em>@_noneToday</em></p>
+    <AddButton ButtonText="Add new User" Enabled="@_enabled" NavigateToUrl="/managing/manageusers/add" VisibilityStyle="_visible" />
+</section>

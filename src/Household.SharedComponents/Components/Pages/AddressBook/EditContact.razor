@@ -1,0 +1,58 @@
+﻿@page "/addressbook/editcontact/{AddressId:int}/{Id:int}"
+
+@using Household.SharedComponents.Components.Shared.Modals
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
+
+<PageTitle>Edit Contact @ContactName</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Edit Contact @ContactName</h2>
+    <p class="text-muted small">For Address @AddressName</p>
+@if (PageHistoryState.CanGoBack())
+{
+    <p class="text-start mt-3"><a href="@PageHistoryState.GetGoBackPage()">Go Back</a></p>
+}
+</div>
+
+<Notification @ref="_notification" Parent="AddressBook" />
+
+<Loading @ref="MyIndicator" />
+
+<section id="dailyShows" class="row">
+<AuthorizeView Context="authContext">
+    <Authorized>
+@if (ContactNumber.Id > 0)
+{
+    <Household.SharedComponents.Components.Shared.Messages.Notification @ref="_alertNotification" Message="@Message" />
+
+    <EditForm Model=@ContactNumber OnSubmit="@HandleSubmit" class="form-control h-auto">
+        <div class="mb-3">
+            <label for="Name" class="form-control-sm">Name</label>
+            <InputText @bind-Value=ContactNumber.Name class="form-control" id="Name" />
+            <ValidationMessage For="@(() => ContactNumber.Name)" />
+        </div>
+        <div class="mb-3">
+            <label for="PhoneNumber" class="form-control-sm">Phone Number</label>
+            <InputText @bind-Value=ContactNumber.PhoneNumber class="form-control" id="PhoneNumber" />
+            <ValidationMessage For="@(() => ContactNumber.PhoneNumber)" />
+        </div>
+        
+        <div class="d-flex justify-content-end">
+            <SaveButton ButtonText="Save" CanSave="true" CanShow="true" />
+        </div>
+    </EditForm>
+}
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</section>

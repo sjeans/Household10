@@ -1,0 +1,16 @@
+@page "/login-modal"
+
+<div class="modal show d-block" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <h4>Login</h4>
+      <p>You will be sent to Keycloak.</p>
+      <button class="btn btn-primary" @onclick="@Login">Continue</button>
+    </div>
+  </div>
+</div>
+
+@code {
+    [Inject] NavigationManager Nav { get; set; } = default!;
+    void Login() => Nav.NavigateTo("/Account/Login", true);
+}

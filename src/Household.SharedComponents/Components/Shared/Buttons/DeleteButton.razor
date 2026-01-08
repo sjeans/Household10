@@ -1,0 +1,34 @@
+﻿@using Blazorise
+@using Blazorise.SpinKit
+@using Microsoft.AspNetCore.Components.Web
+
+@* @rendermode @(new InteractiveServerRenderMode(prerender: true)) *@
+@rendermode RenderMode.InteractiveAuto
+
+<Button Color="Color.Danger" Disabled="@CanSave" Class="@_buttonClass" @onclick="ShowModal">
+    @if (_isDeleting)
+    {
+        <SpinKit Type="SpinKitType.CircleFade" Size="Size.Small" class="me-2" />
+    }
+    <Icon Name="IconName.Delete" Class="me-1" />
+    @ButtonText
+</Button>
+
+<Modal @ref="_confirmModal" Closing="@OnModalClosing" @bind-Visible="@_modalVisible" Style="z-index: 1051;">
+    <ModalContent Centered="true" Style="border-radius: 1rem;" Height="Height.Is25" Width="Width.Is75" Shadow="Shadow.Large" Background="Background.Light">
+        <ModalHeader Background="Background.Info" TextColor="TextColor.Black50" TextAlignment="TextAlignment.Center" TextWeight="TextWeight.SemiBold">
+            Confirm Delete
+        </ModalHeader>
+        <ModalBody>
+            Are you sure you want to delete <strong>@DeletedItemName</strong>?
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" @onclick="CloseModal">
+                <Icon Name="IconName.Ban" Class="me-2" />Cancel
+            </Button>
+            <Button Color="Color.Danger" @onclick="Delete">
+                <Icon Name="IconName.Delete" Class="me-2" />Delete
+            </Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

@@ -1,0 +1,7 @@
+﻿<select id="ddlDayOfWeek" name="ddlDayOfWeek" class="form-select" asp-for="DayOfWeek" asp-items="Html.GetEnumSelectList<DayOfWeek>()" @onchange="HandleChange">
+    <option value="">Choose a day</option>
+@foreach (var c in _dayOfWeek)
+{
+    <option value="@c.Value" selected="@c.Selected">@c.Text</option>
+}
+</select>

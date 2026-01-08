@@ -1,0 +1,39 @@
+@page "/protected"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<h3>Protected</h3>
+<h2>Parsed Claims</h2>
+<AuthorizeView>
+    <Authorized>
+        <div class="text-break">
+            @((MarkupString)@context?.User?.Identity?.Name!)
+        </div>
+        <div class="text-break">
+            @* @((MarkupString)@context.User.Claims.Aggregate("", (s, claim) => s += "<br />" + claim)["<br />".Length..]) *@
+            @((MarkupString)(context?.User?.Claims?.Aggregate(
+                        "",
+                        (s, claim) => s + "<br />" + claim
+                        ) ?? "").Substring(("<br />").Length))
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<h2>Raw Token</h2>
+<p class="text-break">@accessToken</p>
+@code {
+    private string accessToken = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var context = HttpContextAccessor.HttpContext;
+        accessToken = context != null
+            ? await context.GetTokenAsync("access_token") ?? "No token!"
+            : "No token!";
+        // accessToken = await HttpContextAccessor.HttpContext.GetTokenAsync("access_token") ?? "No token!";
+        Console.WriteLine(accessToken);
+    }
+}

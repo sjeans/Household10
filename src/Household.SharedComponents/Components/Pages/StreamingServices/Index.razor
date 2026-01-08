@@ -1,0 +1,41 @@
+﻿@page "/streamingservices/"
+@page "/streamingservices/index"
+
+@using Blazorise
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Loader
+@using Microsoft.AspNetCore.Components.Authorization
+
+<PageTitle>Streaming Services</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Streaming Services</h2>
+    <p class="text-muted small"></p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="streamingServices">
+    <div class="container-fluid py-4 px-3">
+        <div class="row gx-4 gy-4">
+    @if(_serviceDto?.Count > 0)
+    {
+        @foreach (var item in _serviceDto)
+        {
+            <StreamService StreamingService="item" Disable="@_disable" />
+        };
+    }
+    else
+    {
+        <p><em>@_message</em></p>
+    }
+        </div>
+    </div>
+@if (!_showInputs)
+{
+    <AddButton VisibilityStyle="@_visible" NavigateToUrl="/StreamingServices/Add" Enabled="@_enabled" ButtonText="Add New Streaming Service" />
+}
+</section>

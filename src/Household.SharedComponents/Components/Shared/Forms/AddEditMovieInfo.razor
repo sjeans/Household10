@@ -1,0 +1,114 @@
+﻿@using Blazorise
+@using Microsoft.AspNetCore.Components.Forms
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Forms.Selectors
+
+<AntiforgeryToken />
+<DataAnnotationsValidator />
+<div class="mb-3">
+    <label for="Title" class="form-label">Title</label>
+    <Validation Validator="ValidationRule.IsNotEmpty">
+        <ValidationSuccess>Title is good.</ValidationSuccess>
+        <ValidationError>Enter valid Title!</ValidationError>
+        <InputText @bind-Value="MovieInfo.Title" @attributes="HandyFunction()" class="form-control" id="Title" AutoComplete="true" />
+    </Validation>
+    <ValidationMessage For="@(() => MovieInfo.Title)" />
+</div>
+<div class="mb-3">
+    <div class="">
+        <label class="form-label" for="Collectible">Collectible</label>
+        <Validation Validator="ValidationRule.IsSelected">
+            <ValidationSuccess>Collectible type selected.</ValidationSuccess>
+            <ValidationError>Select a valid collection type!</ValidationError>
+            <InputRadioGroup @bind-Value="MovieInfo.Collectible" class="form-check-input" name="Collectible">
+                <div class="form-check form-check-inline form-switch">
+                    <InputRadio class="form-check-input" id="No" Name="Collectible" Value="false" />
+                    <label class="form-check-label" for="No">No</label>
+                </div>
+                <div class="form-check form-check-inline form-switch">
+                    <InputRadio class="form-check-input" id="Yes" Name="Collectible" Value="true" />
+                    <label class="form-check-label" for="Yes">Yes</label>
+                </div>
+            </InputRadioGroup>
+        </Validation>
+        <ValidationMessage For="@(() => MovieInfo.Collectible)" />
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-12 col-md-6">
+        <label for="ddlDiskTypes" class="form-label">Dvd Type</label>
+        <Validation Validator="ValidateDiskType">
+            <ValidationSuccess>Collectible type selected.</ValidationSuccess>
+            <ValidationError>Select a valid collection type!</ValidationError>
+            <DiskTypeSelector DvdSelectedType="@MovieInfo.DvdType" OnDiskTypeUpdate="DiskTypeUpdate" />
+        </Validation>
+        <ValidationMessage For="@(() => MovieInfo.DvdType)" />
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <label for="ddlNumberOfEpisodes" class="form-label">Number of Disks</label>
+        <Validation Validator="ValidateDiskNumber">
+            <ValidationSuccess>Selection is good.</ValidationSuccess>
+            <ValidationError>Enter valid selection!</ValidationError>
+            <EpisodeSelector EpisodeCount="@MovieInfo.DiskNum" DefaultOption="Choose how many disks" OnEpisodeUpdate="EpisodeUpdate" />
+        </Validation>
+        <ValidationMessage For="@(() => MovieInfo.DiskNum)" />
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-check form-switch">
+            <InputCheckbox @bind-Value="MovieInfo.Is3D" class="form-check-input" id="Is3D" />
+            <label class="form-check-label" for="Is3D">Is 3D</label>
+            <ValidationMessage For="@(() => MovieInfo.Is3D)" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-check form-switch">
+            <InputCheckbox @bind-Value="MovieInfo.Is4K" class="form-check-input" id="Is4K" />
+            <label class="form-check-label" for="Is4K">Is 4K</label>
+            <ValidationMessage For="@(() => MovieInfo.Is4K)" />
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-check form-switch">
+            <InputCheckbox @bind-Value="MovieInfo.HasDownload" class="form-check-input" id="HasDownload" />
+            <label class="form-check-label" for="HasDownload">Has Download</label>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-check form-switch">
+            <InputCheckbox @bind-Value="MovieInfo.Downloaded" class="form-check-input" id="Downloaded" />
+            <label class="form-check-label" for="Downloaded">Downloaded</label>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label for="ExpirationDate" class="form-label">Download Expiration Date</label>
+    </div>
+    <div class="col-md-6">
+        <InputDate @bind-Value="MovieInfo.ExpirationDate" class="form-control" id="ExpirationDate" />
+    </div>
+</div>
+<div class="mb-3">
+    <label for="CheckedOutTo" class="form-label">Checked out to</label>
+    <InputText @bind-Value="MovieInfo.CheckedoutTo" class="form-control" id="CheckedOutTo" />
+</div>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label for="FirstName" class="form-label">First Name</label>
+        <InputText @bind-Value="MovieInfo.FirstName" class="form-control" id="FirstName" placeholder="Enter first name" />
+    </div>
+    <div class="col-md-6">
+        <label for="LastName" class="form-label">Last Name</label>
+        <InputText @bind-Value="MovieInfo.LastName" class="form-control" id="LastName" placeholder="Enter last name" />
+    </div>
+</div>
+<div class="d-flex justify-content-end mt-4">
+   @*  Notification="_notification" <- for delete button *@
+    <SaveButton ButtonText="Save" />
+    <DeleteButton ActionType="deleted" ButtonText="Delete" ClientId="_userId.IpAddress" Client="Client"
+        DeletedItemId="@MovieId" DeletedItemName="@MovieInfo.Title" URI=@($"api/movieinfo/{MovieId}") />
+</div>

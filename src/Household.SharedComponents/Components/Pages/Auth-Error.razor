@@ -1,0 +1,39 @@
+﻿@page "/auth-error"
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager
+
+<PageTitle>Login Error</PageTitle>
+
+<div class="auth-error-container">
+    <h3><i class="oi oi-warning"></i> Authentication Failed</h3>
+    <p>We encountered a problem while trying to sign you in.</p>
+
+    <div class="alert alert-danger">
+        <strong>Error Code:</strong> @ErrorCode <br />
+        <strong>Details:</strong> @ErrorDescription
+    </div>
+
+    <hr />
+
+    <div class="action-suggestions">
+        <h5>Common Fixes:</h5>
+        <ul>
+        @if (ErrorCode == "access_denied")
+        {
+            <li>
+                You may have cancelled the login or denied permission.
+                <a href="/login">Try again</a> and ensure you accept the permissions.
+            </li>
+        }
+        else if (ErrorCode == "invalid_request")
+        {
+            <li>This is likely a configuration issue. Please contact support.</li>
+        }
+        else
+        {
+            <li>Try clearing your browser cookies and logging in again.</li>
+        }
+        </ul>
+        <button class="btn btn-primary" @onclick="GoHome">Return to Home</button>
+    </div>
+</div>

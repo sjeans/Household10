@@ -1,0 +1,8 @@
+﻿<div class="text-end row-cols-6 m-3">
+    <div class="col-12 col-md-12">
+        <input type="text" id="showSearch" class="form-control-sm border-1" bind-value="@_searchTerm" oninput="@UpdateSearchTerm" onkeypress="@HandleKeyDown" placeholder="Search..." />
+        <button id="btnSearch" class="btn btn-primary m-sm-1" onclick="@SearchIssues">
+            <span class="oi oi-magnifying-glass me-2" aria-hidden="true"></span>Search
+        </button>
+    </div>
+</div>

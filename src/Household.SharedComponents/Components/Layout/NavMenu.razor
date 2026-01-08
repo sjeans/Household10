@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
+@* @rendermode InteractiveAuto *@
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">HouseHold</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<input type="checkbox" id="navMenu" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link ps-2" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link ps-2" href="/dailyshows" Match="NavLinkMatch.Prefix">
+                <span class="oi oi-list-rich me-2" aria-hidden="true"></span> Daily Shows
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link ps-2" href="/streamingservices" Match="NavLinkMatch.Prefix">
+                <span class="oi oi-play-circle me-2" aria-hidden="true"></span> Streaming Services
+            </NavLink><!-- oi-media-play -->
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link ps-2" href="/movieInfo" Match="NavLinkMatch.Prefix">
+                <span class="oi oi-video me-2" aria-hidden="true"></span> Movies
+            </NavLink><!-- oi-aperture -->
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/addressbook" Match="NavLinkMatch.Prefix">
+                <span class="oi oi-book me-2 ps-2" aria-hidden="true"></span> Address Book
+            </NavLink><!-- oi-list oi oi-people-->
+        </div>
+    @if (isAuthenticated)
+    {
+        <div class="nav-item px-3">
+            <a class="nav-link ps-2" href="/Account/Logout?returnUrl=@pageReferrer"><span class="oi oi-people me-2" aria-hidden="true"></span> Logout</a>
+        </div>
+    }
+    </nav>
+</div>

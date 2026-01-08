@@ -1,0 +1,10 @@
+﻿@using Blazorise.LoadingIndicator
+@using Blazorise.SpinKit
+
+<LoadingIndicator @ref="_loadingIndicator" Class="@Class" FullScreen="true">
+    <IndicatorTemplate>
+        <div class="@IndicatorContainerClass">
+            <SpinKit Type="@Type" Size="@Size" Centered="true" Color="@Color" />@* #068705 70082B *@
+        </div>
+    </IndicatorTemplate>
+</LoadingIndicator>

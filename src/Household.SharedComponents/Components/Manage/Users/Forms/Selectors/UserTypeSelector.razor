@@ -1,0 +1,11 @@
+﻿@* @inject IJSRuntime JsRuntime *@
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<select id="ddlSubscriptions" name="ddlSubscriptions" class="form-select" asp-for="ddlSubscriptions" asp-items="Model.Options" @onchange="HandleChange">
+    <option value="">Choose a Subscription</option>
+@foreach (var c in _options)
+{
+    <option value="@c.Value" selected="@c.Selected">@c.Text</option>
+}
+</select>

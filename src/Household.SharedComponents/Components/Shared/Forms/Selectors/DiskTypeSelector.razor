@@ -1,0 +1,12 @@
+﻿@using Household.Shared.Enums
+@using Household.Shared.Helpers
+
+@* @rendermode InteractiveAuto *@
+
+<select id="ddlDiskTypes" name="ddlDiskTypes" class="form-select" asp-for="ddlDiskTypes" asp-items="Model.Options" onchange="@HandleChange">
+    <option value="">Choose a Dvd Type</option>
+@foreach(var o in _options)
+{
+    <option value="@Convert.ToInt32(o.Value)" selected="@o.Selected">@o.Text</option>
+}
+</select>

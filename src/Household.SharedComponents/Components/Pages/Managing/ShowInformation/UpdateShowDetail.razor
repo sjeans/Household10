@@ -1,0 +1,60 @@
+﻿@page "/managing/showinformation/updateshowdetail"
+@page "/managing/updateshowdetail"
+
+@using Blazorise.LoadingIndicator
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Forms.Selectors
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Helpers
+@using Household.SharedComponents.Components.Shared.Messages
+
+<PageTitle>Update Show Detail</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Update Show Detail</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+    <div class="row-cols-6 m-3">
+        <div class="col-md-12">
+            <ShowInformationSelector OnSubscriptionUpdate="UpdateShowInformationAsync" />
+        </div>
+    </div>
+</div>
+
+<SuccessNotification @ref="_notification" Parent="managing/UpdateShowDetail" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="findShowDetails" class="row">
+    <div class="row">
+        <div class="col-md-5">
+            <img alt="@_showName" src="@_showImgSrc" height="295" width="210" hidden="@(_showImgSrc.IsNullOrWhiteSpace())" /><br />
+            <p class="form-text">
+                Show is up to date: @Common.ConvertBoolToYesNo(!_needsUpdated)<br />
+                Need to add more episodes: @Common.ConvertBoolToYesNo(_moreEpisodes)<br />
+            </p>
+            <br />
+            @_whichNeedsUpdated
+            <hr />
+            @_whichNeedsUpdated
+        </div>
+        <div class="col-md-7">
+            <p>@_showName</p>
+            @_showSummary
+        </div>
+        <div class="col-md-12">
+            <strong>Time:</strong> @_showName
+        </div>
+    </div>
+    @* <div class="row">
+    </div> *@
+    <div class="row">
+        <div class="col-md-12">
+            <input type="button" id="btnUpdateAll" class="btn btn-primary m-sm-1" style="line-height: 1rem;" hidden="@(_moreEpisodes)" value="Update All" @onclick="HandleUpdateAll" />
+        </div>
+        <div class="col-md-12">
+            <input type="button" id="btnAddNewEpisodes" class="btn btn-primary m-sm-1" style="line-height: 1rem;" hidden="@(!_moreEpisodes)" value="Add New Episodes" @onclick="HandleAddNewEpisodes" />
+        </div>
+    </div>
+</section>

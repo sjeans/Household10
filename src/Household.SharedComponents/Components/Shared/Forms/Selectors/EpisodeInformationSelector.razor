@@ -1,0 +1,9 @@
+﻿@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
+
+<select id="ddlEpisodeInformation" name="ddlEpisodeInformation" title="List of Epidsodes" class="form-select" asp-for="ddlEpisodeInformation" asp-items="Model.Options" @onchange="HandleChange">
+    <option value="">Choose a show name</option>
+@foreach (var c in Options)
+{
+    <option value="@c.Value" selected="@c.Selected">@c.Text</option>
+}
+</select>

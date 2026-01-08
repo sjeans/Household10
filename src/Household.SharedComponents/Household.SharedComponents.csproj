@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<RazorClassLibraryUseStaticWebAssets>true</RazorClassLibraryUseStaticWebAssets>
+		<RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="wwwroot\css\**" />
+		<Content Remove="wwwroot\css\**" />
+		<EmbeddedResource Remove="wwwroot\css\**" />
+		<None Remove="wwwroot\css\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Blazorise" Version="1.8.8" />
+		<PackageReference Include="Blazorise.Bootstrap5" Version="1.8.8" />
+		<PackageReference Include="Blazorise.Components" Version="1.8.8" />
+		<PackageReference Include="Blazorise.DataGrid" Version="1.8.8" />
+		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.8.8" />
+		<PackageReference Include="Blazorise.LoadingIndicator" Version="1.8.8" />
+		<PackageReference Include="Blazorise.SpinKit" Version="1.8.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Household.Shared\Household.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+
+</Project>

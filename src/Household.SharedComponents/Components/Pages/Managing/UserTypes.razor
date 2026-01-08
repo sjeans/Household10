@@ -1,0 +1,30 @@
+﻿@page "/managing/usertypes"
+
+@using Household.SharedComponents.Components.Manage.Users
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Models
+
+<PageTitle>All user types</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">All users types</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+    <p>
+        @* <input type="button" class="btn btn-secondary m-sm-2" value="Add User" @onclick='() => NavManager.NavigateTo("/Managing/AddUser")' /> *@
+    </p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows" class="row">
+@if (_allUserTypes != null)
+{
+    <UserTypeEntry UserTypes="_allUserTypes" />
+}
+    <p><em>@_noneToday</em></p>
+    <AddButton VisibilityStyle="@_visible" Enabled="@_enabled" NavigateToUrl="/managing/manageusertypes/add" ButtonText="Add New Role" />
+</section>
+

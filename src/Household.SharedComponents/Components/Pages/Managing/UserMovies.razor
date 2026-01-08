@@ -1,0 +1,38 @@
+﻿@page "/managing/usermovies"
+
+@using Household.SharedComponents.Components.Shared.Loader
+
+<PageTitle>All User Movies</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">All User Movies</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+    <p>
+        @* <input type="button" class="btn btn-secondary m-sm-2" value="Add User" @onclick='() => NavManager.NavigateTo("/Managing/AddUser")' /> *@
+    </p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="dailyShows" class="row">
+@if (_pairs != null && _pairs.Any())
+{
+    int j = 1;
+    @foreach (var item in _pairs)
+    {
+        <div class="col-md-4">
+            <a href="/managing/manageusermovies/edit/@item.Key">@item.Value.Item1</a> - @item.Value.Item3
+            <br />
+        </div>
+        if (j >= 3)
+        {
+            <hr />
+            j = 0;
+        }
+        j++;
+    }
+}
+    <p><em>@_noneToday</em></p>
+</section>

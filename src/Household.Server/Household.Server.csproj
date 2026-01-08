@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UserSecretsId>150d75d1-ccc4-45a4-a4d2-a1645b0288ee</UserSecretsId>
+		<RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="wwwroot\css\**" />
+	  <Content Remove="wwwroot\css\**" />
+	  <EmbeddedResource Remove="wwwroot\css\**" />
+	  <None Remove="wwwroot\css\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.15.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Household.Application\Household.Application.csproj" />
+	  <ProjectReference Include="..\Household.Client\Household.Client.csproj" />
+	  <ProjectReference Include="..\Household.SharedComponents\Household.SharedComponents.csproj" />
+	  <ProjectReference Include="..\Household.Shared\Household.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="wwwroot\app.css">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\scripts\findIP.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\scripts\referringPage.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\scripts\reSetSelector.js">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+</Project>

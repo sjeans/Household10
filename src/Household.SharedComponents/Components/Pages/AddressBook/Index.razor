@@ -1,0 +1,40 @@
+﻿@page "/addressbook"
+@page "/addressbook/index"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Helpers;
+@using Household.Shared.Dtos;
+
+<PageTitle>Address Book</PageTitle>
+
+@* @rendermode @(new InteractiveServerRenderMode(prerender: true)) *@
+@rendermode RenderMode.InteractiveAuto
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Address Book</h2>
+    <p class="text-muted small"><SearchAddresses AllAddresses="_allAddresses" /></p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+ <section id="dailyShows" class="row">
+@if (_allAddresses.Any())
+{
+    <AddressbookEntry AllAddresses="_allAddresses" Letter="" />
+}
+    <p><em>@_noneToday</em></p>
+
+@if (!_showInputs)
+{
+    <AddButton VisibilityStyle="@_visible" Enabled="_enabled" NavigateToUrl="/addressbook/add" ButtonText="Add New Address" />
+}
+
+    @* <button class="btn btn-primary" @onclick="GetIdentifiers">Get Identifiers</button> *@
+
+</section>

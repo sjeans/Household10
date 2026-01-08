@@ -1,0 +1,66 @@
+﻿@page "/managing/showinformation/addshowdetail"
+@page "/managing/addshowdetail"
+
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Forms.Selectors
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Helpers
+
+<PageTitle>Add Show Detail</PageTitle>
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Add Show Detail</h2>
+    <p class="text-muted small">Today: @DateTime.Now.ToShortDateString()</p>
+    <div class="row-cols-6 m-3">
+        <div class="col-md-12">
+            <input type="text" id="showSearch" class="form-control-sm" @bind-value="@_searchTerm" />
+            <input type="button" id="btnSearch" class="btn btn-primary m-sm-1" style="line-height: 1rem;" value="Search" @onclick="SearchIssuesAsync" />
+        </div>
+    </div>
+</div>
+
+<SuccessNotification @ref="_notification" Parent="DailyShows" />
+
+<Loading @ref="_loadingIndicator" />
+
+<section id="AddShowDetails" class="row">
+    <div class="row">
+        <div class="col-md-5">
+            <img alt="@_showName" src="@_showImgSrc" />
+        </div>
+        <div class="col-md-7">
+            @_showSummary
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12"><p>@_showName</p></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <strong>Time:</strong> @_episodeAirTime
+        </div>
+        <div class="col-md-12">
+            <strong>Series Finale:</strong> @_showEnded
+        </div>
+        <div class="col-md-12">
+            <EpisodeInformationSelector EpisodeList="_showInformation?.Episodes" OnEpisodeDetailUpdate="EpisodeUpdate" />
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-5">
+                    <img alt="@_episodeName" src="@_episodeImgSrc" />
+                </div>
+                <div class="col-md-7">
+                    @episodeSummary
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="button" id="btnSave" class="btn btn-primary m-sm-1" style="line-height: 1rem;" value="Save" @onclick="HandleSubmit" />
+        </div>
+    </div>
+</section>

@@ -1,0 +1,37 @@
+﻿@page "/addressbook/contact/{letter}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Household.SharedComponents.Components.Shared
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Household.SharedComponents.Components.Shared.Loader
+@using Household.Shared.Dtos
+@using Household.Shared.Helpers
+
+<PageTitle>Address(es) for letter @Letter</PageTitle>
+
+@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
+@rendermode RenderMode.InteractiveAuto
+
+@attribute [Authorize]
+
+<div class="mb-3">
+    <h2 class="h2 mb-2 fw-semibold">Address(es) for letter @Letter</h2>
+    <p class="text-muted small">
+        <SearchAddresses AllAddresses="_allAddresses" />
+    </p>
+</div>
+
+<Loading @ref="_loadingIndicator" />
+
+ <section id="dailyShows" class="row">
+    <AddressbookEntry Letter="@Letter" />
+
+    <p><em></em></p>
+
+    <AuthorizeView Context="authContext">
+        <Authorized>
+            <AddButton VisibilityStyle="@_visible" Enabled="false" NavigateToUrl="/addressbook/add" ButtonText="Add New Address" />
+        </Authorized>
+    </AuthorizeView>
+</section>

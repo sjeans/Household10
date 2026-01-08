@@ -1,0 +1,22 @@
+﻿@using Blazorise
+@using Household.SharedComponents.Components.Shared.Loader
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@* @rendermode InteractiveAuto *@
+
+<Loading @ref="_loadingIndicator" />
+
+@foreach (char letter in _alphabet)
+{
+    string ltr = letter.ToString();
+    if (letter != 'Z')
+    {
+        <span><Button Style="--bs-btn-padding-x: 0; --bs-btn-padding-y: 0;" @onclick="@(() => DynamicUrl(ltr))">@letter</Button> | </span>
+    }
+    else
+    {
+        <span><Button Style="--bs-btn-padding-x: 0; --bs-btn-padding-y: 0;" @onclick="@(() => DynamicUrl(ltr))">@letter</Button></span>
+    }
+}
+
+<span> | <Button Style="--bs-btn-padding-x: 0; --bs-btn-padding-y: 0;" @onclick="@(() => DynamicUrl("All"))">All </Button></span>

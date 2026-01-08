@@ -1,0 +1,18 @@
+﻿@using Blazorise
+
+<Modal @ref="_nofification" Closing="@OnModalClosing">
+    <ModalContent Class="content-rounded" Height="!_autoHide ? Height.Is25 : Height.Rem(7.25)" Width="Width.Is100" Background="Background.Light">
+        <ModalHeader Style="@_background">
+            @_title
+        </ModalHeader>
+        <ModalBody>
+            @Message
+        </ModalBody>
+        <ModalFooter Visibility="!_autoHide ? Visibility.Visible : Visibility.Invisible">
+            <Button Color="Color.Secondary" @onclick="() => _nofification!.Hide()">
+                <span class="oi oi-circle-x me-2" aria-hidden="true"></span>Close
+            </Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+

@@ -1,0 +1,79 @@
+﻿@using Blazorise
+@using Household.Shared.Enums
+@using Household.Shared.Helpers
+
+<Modal @ref="ModalRef" @bind-Visible="@_modalVisible" Closing="@OnModalClosing" Class="custom-modal">
+    <ModalContent Centered="true" Style="border-radius: 1rem;">
+        <ModalHeader>
+            <ModalTitle><a href="@_officialSite" class="text-decoration-none text-primary" target="_blank">@_showName</a></ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <div class="row g-4">
+                <!-- Image Column -->
+                <div class="col-md-6">
+                    <img src="@_episodeImgSrc" alt="@_episodeName" title="@_episodeName" class="img-fluid rounded shadow-sm@_missingImg" />
+                    <dl class="row small mt-3">
+                        <dt class="col-sm-6">Season:</dt>
+                        <dd class="col-sm-6">@(((Seasons)_episodeSeason).GetDescription())</dd>
+
+                        <dt class="col-sm-6">Episode:</dt>
+                        <dd class="col-sm-6">@_episodeNumber</dd>
+                    </dl>
+                </div>
+                <!-- Episode Details -->
+                <div class="col-md-6">
+                    <p class="mb-2">
+                        <strong><a href="/episodedetails/index/@_showId/@_episodeSeason/@_episodeNumber" class="text-decoration-none text-primary">@_episodeName</a></strong>
+                    </p>
+                    <dl class="row small">
+                        <dt class="col-sm-6">Aired Date:</dt>
+                        <dd class="col-sm-6">@_episodeAirDate</dd>
+
+                        <dt class="col-sm-6">Run Time:</dt>
+                        <dd class="col-sm-6">@_episodeRuntime</dd>
+
+                        <dt class="col-sm-6">Release Time:</dt>
+                        <dd class="col-sm-6">@_episodeAirTime</dd>
+                        
+                        <dt class="col-sm-6">Rating:</dt>
+                        <dd class="col-sm-6">@_episodeRating</dd>
+
+                        <dt class="col-sm-6">Stream:</dt>
+                        <dd class="col-sm-6">@_streamingName</dd>
+                    </dl>
+                </div>
+                @* <div class="clearfix">
+                    <img src="https://via.placeholder.com/150" class="float-start me-3 mb-3 img-fluid" alt="Example Image">
+
+                    <dl>
+                        <dt>Term 1</dt>
+                        <dd>Description for the first term. This is a longer description to show how the text will wrap around the image and then continue underneath it.</dd>
+
+                        <dt>Term 2</dt>
+                        <dd>Description for the second term. It will fill the available space on the right and then flow beneath the image.</dd>
+
+                        <dt>Term 3</dt>
+                        <dd>This is another description to illustrate how the description list continues below the image.</dd>
+                    </dl>
+                </div> *@
+
+            </div>
+            <!-- Summary -->
+            <div class="mt-1">
+                @_summaryDisplay
+            </div>
+            <!-- Navigation Buttons -->
+            <div class="row mt-4">
+                <div class="col-6">
+                    <button type="button" class="btn btn-outline-primary w-100" @onclick="Previous" aria-label="Previous" hidden="@_previousDisable"><i class="oi oi-chevron-left me-2" aria-hidden="true"></i>Previous</button>
+                </div>
+                <div class="col-6 text-end">
+                    <button type="button" class="btn btn-outline-primary w-100" @onclick="Next" aria-label="Next" hidden="@_nextDisable">Next<i class="oi oi-chevron-right ms-2" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </ModalBody>
+        <ModalFooter>
+            <button class="btn btn-outline-primary m-sm-2" @onclick="@HideModal"><span class="oi oi-circle-x me-2" aria-hidden="true"></span>Close</button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

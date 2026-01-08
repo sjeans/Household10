@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+<div class="container-fluid py-4 px-3">
+    <div class="row gx-4 gy-4">
+    @if (TvShowCategory?.Count == 0)
+    {
+        <div class="col-md-12 d-flex m-2">
+            <div class="align-self-center">None</div>
+        </div>
+    }
+
+    <Virtualize Items="@TvShowCategory" Context="show">
+        <TvShowItem @key="show.Id" TvShow="show" DisableLink="@LinkDisabled" ShowInformationDto="@ShowInformation" />
+    </Virtualize>
+    </div>
+</div>

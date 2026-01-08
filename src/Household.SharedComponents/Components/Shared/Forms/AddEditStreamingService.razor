@@ -1,0 +1,44 @@
+﻿@using Blazorise
+@using System.ComponentModel.DataAnnotations;
+@using Household.SharedComponents.Components.Shared.Buttons
+@using Microsoft.AspNetCore.Components.Forms
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<AntiforgeryToken />
+<DataAnnotationsValidator />
+<div class="mb-3">
+    <label for="Name" class="form-label">Name</label>
+    <Validation Validator="ValidationRule.IsNotEmpty">
+        <InputText id="Name" @bind-Value="ServiceDto.Name" class="form-control" />
+        <ValidationMessage For="@(() => ServiceDto.Name)" />
+    </Validation>
+</div>
+<div class="mb-3">
+    <label for="Description" class="form-label">Description</label>
+    <InputText id="Description" @bind-Value="ServiceDto.Description" class="form-control" />
+</div>
+<div class="mb-3">
+    <label for="Subscription" class="form-label">Subscription</label>
+    <InputText id="Subscription" @bind-Value="ServiceDto.Subscription" class="form-control" />
+</div>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label for="Amount" class="form-label">Amount</label>
+        <InputNumber id="Amount" @bind-Value="ServiceDto.Amount" class="form-control" />
+    </div>
+
+    <div class="col-md-6">
+        <label for="PaySchedule" class="form-label">Pay Schedule</label>
+        <Validation Validator="ValidateDate">
+            <InputDate id="PaySchedule" @bind-Value="ServiceDto.PaySchedule" class="form-control" />
+            <ValidationMessage For="@(() => ServiceDto.PaySchedule)" />
+        </Validation>
+    </div>
+</div>
+<div class="col-12 d-flex justify-content-end gap-2 mt-3">
+    <SaveButton ButtonText="Save" CanSave="@CanSave" CanShow="@CanShow" />
+    <DeleteButton ActionType="deleted" ButtonText="Delete" CanSave="@CanSave" CanShow="@CanShow" Client="@Client" ClientId="_userId.IpAddress"
+        DeletedItemId="@StreamingServiceId" DeletedItemName="@StreamingName" Logger="@Log" Notification="@ComponentNotification"
+        URI=@($"api/subscriptions/removesubscription/{ServiceDto.Id}") />
+</div>
