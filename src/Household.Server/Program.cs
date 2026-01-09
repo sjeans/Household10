@@ -1,51 +1,3 @@
-//using Household.Shared.Dtos;
-//using Household.Shared.Helpers;
-
-//WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-//builder.Services.Configure<AppSettings>(builder.Configuration);
-
-
-//builder.Services.AddRazorPages();
-//builder.Services.AddServerSideBlazor(); // Essential for Server-side rendering
-
-//builder.Services.AddRazorComponents()
-//    .AddInteractiveServerComponents()
-//    .AddInteractiveWebAssemblyComponents(); // add this
-
-//builder.Services.AddControllers();     // REQUIRED
-
-//DependencyInjection.AddServices(builder.Services, builder.Configuration);
-//Household.Application.DependencyInjection.AddApplicationServices(builder.Services);
-
-//WebApplication app = builder.Build();
-
-//app.UseAuthentication();
-//app.UseAuthorization();
-
-//app.UseStaticFiles();
-//app.MapStaticAssets();
-//app.UseRouting();
-
-//app.UseAntiforgery();
-
-////app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
-////app.MapRazorComponents<App>()
-////        .AddInteractiveServerRenderMode()
-////        .AddInteractiveWebAssemblyRenderMode()
-////        .AddAdditionalAssemblies(typeof(Household.Client._Imports).Assembly); // Assuming Client._Imports is in your client project
-//app.MapRazorComponents<SharedComponents.Components.App>()
-//    .AddInteractiveServerRenderMode()
-//    .AddInteractiveWebAssemblyRenderMode()
-//    .AddAdditionalAssemblies(typeof(Household.Client._Imports).Assembly); // Adjust 'Client.Program' to your client-side assembly
-
-//app.MapControllers();                  // REQUIRED
-
-//app.MapBlazorHub();
-//app.MapFallbackToPage("/Index");
-
-//app.Run();
-
 using Household.Shared.Dtos;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -61,7 +13,7 @@ try
 {
     WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
-    Log.Logger.Information($"DETECTED ENVIRONMENT: {builder.Environment.EnvironmentName}");
+    Log.Logger.Debug($"DETECTED ENVIRONMENT: {builder.Environment.EnvironmentName}");
 
     builder.Services.Configure<AppSettings>(builder.Configuration);
     builder.Services.Configure<Household.Shared.Dtos.Serilog>(builder.Configuration.GetSection("Serilog"));
@@ -101,42 +53,20 @@ try
         //app.UseHsts();
     }
 
-    //app.UseStaticFiles();
-    //app.UseRouting();
-
-    //// Optional: Add Serilog request logging for HTTP requests (ASP.NET Core specific)
-    //app.UseSerilogRequestLogging();
-
-    //app.UseAuthentication();
-    //app.UseAuthorization();
-
-    //app.MapControllers();
-    //app.MapBlazorHub();
-
-    ////// THIS IS THE CORRECT HYBRID ENTRYPOINT
-    ////app.MapFallbackToFile("index.html");
-    //app.MapFallbackToPage("/Index");
-
-    //app.Run();
     app.UseForwardedHeaders(new ForwardedHeadersOptions
     {
         ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
     });
 
     app.UseCookiePolicy();
-
-    //app.UseHttpsRedirection();
     app.UseStaticFiles();
 
     // 5. Add Serilog request logging middleware
     // Place this before other middleware that might generate log events you want to capture
     // like UseRouting, UseAuthentication, UseAuthorization
     app.UseSerilogRequestLogging();
-
     app.UseRouting();
-
     app.UseCors("CorsPolicy");
-
     app.UseAntiforgery();
 
     app.UseAuthorization();
@@ -161,8 +91,6 @@ try
         .AddInteractiveServerRenderMode()
         .AddInteractiveWebAssemblyRenderMode();
 
-    //// Map Blazor components and pages
-    //app.MapBlazorHub();
     app.MapFallbackToPage("/Index");
     app.MapControllers(); // if using controllers
 
